@@ -1,9 +1,20 @@
+// src/App.jsx
+import { useEffect } from 'react';
+import './App.css';
+import './index.css';
+import Layout from './components/layout/Layout';
+import Dashboard from './pages/Dashboard';
+
 function App() {
+  useEffect(() => {
+    document.documentElement.classList.add('dark');
+  }, []);
+
   return (
-    <div className="h-screen flex items-center justify-center bg-gradient-to-r from-purple-500 to-blue-500">
-      <div className="bg-white text-black p-8 rounded-2xl shadow-xl hover:scale-105 transition">
-        Tailwind v3 Working 🚀
-      </div>
+    <div className="dashboard-container">
+      <Layout>
+        <Dashboard />
+      </Layout>
     </div>
   );
 }
