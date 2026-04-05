@@ -14,11 +14,14 @@ canvas {
   max-width: 100% !important;
 }
 
+
 .glass {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
 }
+
+
 /* Add this at the bottom of src/index.css */
 .glass-card {
   background: rgba(24, 24, 27, 0.85);
@@ -30,7 +33,14 @@ canvas {
 .neon-green {
   box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
 }
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
 
+.animate-shimmer {
+  animation: shimmer 8s linear infinite;
+}
 .text-glow {
   text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
 }

@@ -1,20 +1,34 @@
-// src/components/common/ChartContainer.jsx
 import React from 'react';
 import Card from './Card';
 
 const ChartContainer = ({ title, children, actionButtons = null }) => {
   return (
-    <Card className="p-8">
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-2">
-          <span className="text-emerald-400">↗</span>
-          <h3 className="font-semibold text-lg tracking-wide">{title}</h3>
+    <Card className="p-4 sm:p-5 lg:p-8">
+
+      {/* 🔹 Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 sm:mb-6">
+
+        {/* Title */}
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="text-emerald-400 text-sm sm:text-base">↗</span>
+          <h3 className="font-semibold text-base sm:text-lg tracking-wide truncate">
+            {title}
+          </h3>
         </div>
-        {actionButtons}
+
+        {/* Actions */}
+        {actionButtons && (
+          <div className="flex items-center gap-2 flex-wrap">
+            {actionButtons}
+          </div>
+        )}
       </div>
-      <div className="chart-container">
+
+      {/* 🔹 Chart Content */}
+      <div className="w-full min-w-0 h-52 sm:h-64 lg:h-80">
         {children}
       </div>
+
     </Card>
   );
 };

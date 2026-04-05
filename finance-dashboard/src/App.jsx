@@ -1,21 +1,19 @@
-// src/App.jsx
-import { useEffect } from 'react';
-import './App.css';
-import './index.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
+
 import Dashboard from './pages/Dashboard';
+import Allocations from './pages/Allocations';
 
 function App() {
-  useEffect(() => {
-    document.documentElement.classList.add('dark');
-  }, []);
-
   return (
-    <div className="dashboard-container">
+    <BrowserRouter>
       <Layout>
-        <Dashboard />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/allocations" element={<Allocations />} />
+        </Routes>
       </Layout>
-    </div>
+    </BrowserRouter>
   );
 }
 
