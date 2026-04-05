@@ -1,7 +1,11 @@
 // src/components/layout/Navbar.jsx
 import React from 'react';
+import { useRole, useSetRole } from '../../store/useFinanceStore';
 
 const Navbar = () => {
+  const role = useRole();
+  const setRole = useSetRole();
+
   const markets = [
     { symbol: 'MSFT', price: '420.55', change: '+0.88%' },
     { symbol: 'TSLA', price: '177.99', change: '-2.43%' },
@@ -13,10 +17,16 @@ const Navbar = () => {
 
   return (
     <nav className="bg-zinc-950 border-b border-zinc-800 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
+      
+      {/* Left */}
       <div className="flex items-center gap-8">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-emerald-500 rounded-xl flex items-center justify-center font-bold text-black">C</div>
-          <span className="text-2xl font-bold tracking-tighter">CAPITAL</span>
+          <div className="w-8 h-8 bg-emerald-500 rounded-xl flex items-center justify-center font-bold text-black">
+            C
+          </div>
+          <span className="text-2xl font-bold tracking-tighter">
+            CAPITAL
+          </span>
         </div>
 
         <div className="flex gap-6 text-sm font-medium">
@@ -33,20 +43,42 @@ const Navbar = () => {
           <div key={i} className="flex items-center gap-3 whitespace-nowrap">
             <span className="font-medium">{item.symbol}</span>
             <span>${item.price}</span>
-            <span className={`text-xs ${item.change.startsWith('+') ? 'text-emerald-400' : 'text-red-400'}`}>
+            <span
+              className={`text-xs ${
+                item.change.startsWith('+')
+                  ? 'text-emerald-400'
+                  : 'text-red-400'
+              }`}
+            >
               {item.change}
             </span>
           </div>
         ))}
       </div>
 
+      {/* Right Section */}
       <div className="flex items-center gap-4">
+
+        {/* ✅ RBAC ROLE SWITCHER */}
+        <select
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          className="bg-zinc-900 border border-zinc-700 text-sm px-3 py-2 rounded-xl text-white"
+        >
+          <option value="admin">Admin</option>
+          <option value="viewer">Viewer</option>
+        </select>
+
+        {/* Plan Button */}
         <button className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 rounded-xl text-sm flex items-center gap-2">
           <span>Standard</span>
           <span className="text-xs text-emerald-400">Pro</span>
         </button>
-        
-        <div className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center text-sm font-medium">JD</div>
+
+        {/* Avatar */}
+        <div className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center text-sm font-medium">
+          JD
+        </div>
       </div>
     </nav>
   );

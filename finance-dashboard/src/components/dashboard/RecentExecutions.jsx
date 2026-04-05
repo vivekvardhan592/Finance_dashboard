@@ -1,7 +1,9 @@
+// src/components/dashboard/RecentExecutions.jsx
 import React, { useState } from 'react';
 import {
   useTransactions,
-  useDeleteTransaction
+  useDeleteTransaction,
+  useRole
 } from '../../store/useFinanceStore';
 import TransactionModal from '../transactions/TransactionModal';
 import TransactionForm from '../transactions/TransactionForm';
@@ -9,13 +11,16 @@ import TransactionForm from '../transactions/TransactionForm';
 const RecentExecutions = () => {
   const transactions = useTransactions();
   const deleteTransaction = useDeleteTransaction();
+  const role = useRole();
 
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
   const [isOpen, setIsOpen] = useState(false);
   const [editData, setEditData] = useState(null);
 
-  // ✅ SEARCH + FILTER LOGIC
+  const isAdmin = role === "admin";
+
+  // 🔍 Search + Filter
   const filteredTransactions = transactions.filter((txn) => {
     const matchesSearch = txn.title
       .toLowerCase()
@@ -27,7 +32,7 @@ const RecentExecutions = () => {
     return matchesSearch && matchesFilter;
   });
 
-  // ✅ LIMIT TO 5 (dashboard view)
+  // 📊 Limit to 5 (dashboard view)
   const recentExecutions = filteredTransactions
     .slice(0, 5)
     .map((txn) => ({
@@ -44,54 +49,60 @@ const RecentExecutions = () => {
 
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h3 className="font-semibold text-lg">Recent Executions</h3>
+        <h3 className="font-semibold text-xl">Recent Executions</h3>
 
+        {/* ➕ Add Button */}
         <button
+          disabled={!isAdmin}
+          title={!isAdmin ? "Only admin can perform this action" : ""}
           onClick={() => {
+            if (!isAdmin) return;
             setEditData(null);
             setIsOpen(true);
           }}
-          className="text-xs text-emerald-400 hover:text-emerald-500"
+          className={`text-sm font-medium ${
+            isAdmin
+              ? "text-emerald-400 hover:text-emerald-500"
+              : "text-zinc-600 cursor-not-allowed"
+          }`}
         >
           + Add Transaction
         </button>
       </div>
 
-      {/* ✅ SEARCH + FILTER UI */}
-      <div className="flex flex-col md:flex-row gap-3 mb-4">
-
-        {/* Search */}
+      {/* 🔎 Search + Filter */}
+      <div className="flex flex-col md:flex-row gap-3 mb-5">
         <input
           type="text"
           placeholder="Search transactions..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="px-4 py-2 rounded-xl bg-zinc-800 border border-zinc-700 text-sm w-full md:w-1/2"
+          className="px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-sm w-full md:w-1/2"
         />
 
-        {/* Filter */}
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="px-4 py-2 rounded-xl bg-zinc-800 border border-zinc-700 text-sm w-full md:w-1/4"
+          className="px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-sm w-full md:w-1/4"
         >
           <option value="all">All</option>
           <option value="income">Income</option>
           <option value="expense">Expense</option>
         </select>
-
       </div>
 
-      {/* Table */}
+      {/* 📋 Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full text-[15px]">
+
+          {/* Header */}
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-zinc-400">
-              <th className="pb-4">ASSET</th>
-              <th className="pb-4">TYPE</th>
-              <th className="pb-4">DATE</th>
-              <th className="pb-4">VALUE</th>
-              <th className="pb-4 text-right">ACTIONS</th>
+            <tr className="border-b border-zinc-800 text-left text-zinc-500 text-xs tracking-wide">
+              <th className="py-3 px-3">ASSET</th>
+              <th className="py-3 px-3">TYPE</th>
+              <th className="py-3 px-3">DATE</th>
+              <th className="py-3 px-3">VALUE</th>
+              <th className="py-3 px-3 text-right">ACTIONS</th>
             </tr>
           </thead>
 
@@ -104,20 +115,29 @@ const RecentExecutions = () => {
               </tr>
             ) : (
               recentExecutions.map((item) => (
-                <tr key={item.id} className="hover:bg-zinc-950/50 transition">
+                <tr
+                  key={item.id}
+                  className="hover:bg-zinc-950/50 transition"
+                >
 
-                  <td className="py-4">{item.asset}</td>
+                  {/* Asset */}
+                  <td className="py-3 px-3 font-medium text-white">
+                    {item.asset}
+                  </td>
 
-                  <td className="py-4 capitalize">
+                  {/* Type */}
+                  <td className="py-3 px-3 text-zinc-400 capitalize">
                     {item.type}
                   </td>
 
-                  <td className="py-4">
+                  {/* Date */}
+                  <td className="py-3 px-3 text-zinc-400">
                     {item.date}
                   </td>
 
+                  {/* Value */}
                   <td
-                    className={`py-4 ${
+                    className={`py-3 px-3 font-medium ${
                       item.value >= 0
                         ? 'text-emerald-400'
                         : 'text-red-400'
@@ -127,23 +147,47 @@ const RecentExecutions = () => {
                     ${Math.abs(item.value).toLocaleString()}
                   </td>
 
-                  <td className="py-4 text-right space-x-3">
+                  {/* Actions */}
+                  <td className="py-3 px-3 text-right space-x-2">
 
-                    {/* Edit */}
+                    {/* ✏️ Edit */}
                     <button
+                      disabled={!isAdmin}
+                      title={!isAdmin ? "Only admin can perform this action" : ""}
                       onClick={() => {
+                        if (!isAdmin) return;
                         setEditData(item);
                         setIsOpen(true);
                       }}
-                      className="text-blue-400 text-xs hover:text-blue-500"
+                      className={`text-xs ${
+                        isAdmin
+                          ? "text-blue-400 hover:text-blue-500"
+                          : "text-zinc-600 cursor-not-allowed"
+                      }`}
                     >
                       Edit
                     </button>
 
-                    {/* Delete */}
+                    {/* 🗑 Delete */}
                     <button
-                      onClick={() => deleteTransaction(item.id)}
-                      className="text-red-400 text-xs hover:text-red-500"
+                      disabled={!isAdmin}
+                      title={!isAdmin ? "Only admin can perform this action" : ""}
+                      onClick={() => {
+                        if (!isAdmin) return;
+
+                        const confirmDelete = window.confirm(
+                          "Are you sure you want to delete this transaction?"
+                        );
+
+                        if (confirmDelete) {
+                          deleteTransaction(item.id);
+                        }
+                      }}
+                      className={`text-xs ${
+                        isAdmin
+                          ? "text-red-400 hover:text-red-500"
+                          : "text-zinc-600 cursor-not-allowed"
+                      }`}
                     >
                       Delete
                     </button>
@@ -157,7 +201,7 @@ const RecentExecutions = () => {
         </table>
       </div>
 
-      {/* Modal */}
+      {/* 🧾 Modal */}
       <TransactionModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
