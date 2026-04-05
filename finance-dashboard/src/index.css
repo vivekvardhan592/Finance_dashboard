@@ -44,3 +44,45 @@ canvas {
 .text-glow {
   text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
 }
+
+/* 🔥 Smooth infinite ticker animation */
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+
+
+/* Hide scrollbar */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* 🔥 Infinite smooth scrolling */
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 60s linear infinite; /* slower for mobile readability */
+}
+
+/* Pause when user hovers (desktop UX) */
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* Hide scrollbar if overflow appears */
+::-webkit-scrollbar {
+  display: none;
+}

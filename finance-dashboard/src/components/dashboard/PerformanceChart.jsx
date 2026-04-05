@@ -124,10 +124,10 @@ const PerformanceChart = () => {
   };
 
   return (
-    <div className="w-full min-w-0 h-56 sm:h-64 lg:h-80">
-      <Line data={data} options={options} />
-    </div>
-  );
+  <div className="w-full min-w-0 h-44 sm:h-52 lg:h-56">
+    <Line data={data} options={options} />
+  </div>
+);
 };
 
 export default PerformanceChart;

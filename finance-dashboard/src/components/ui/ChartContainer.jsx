@@ -3,10 +3,10 @@ import Card from './Card';
 
 const ChartContainer = ({ title, children, actionButtons = null }) => {
   return (
-    <Card className="p-4 sm:p-5 lg:p-8">
+    <Card className="p-4 sm:p-5 lg:p-6">
 
       {/* 🔹 Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 sm:mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3 sm:mb-4">
 
         {/* Title */}
         <div className="flex items-center gap-2 min-w-0">
@@ -25,7 +25,7 @@ const ChartContainer = ({ title, children, actionButtons = null }) => {
       </div>
 
       {/* 🔹 Chart Content */}
-      <div className="w-full min-w-0 h-52 sm:h-64 lg:h-80">
+      <div className="w-full min-w-0 h-45 sm:h-52 lg:h-56">
         {children}
       </div>
 

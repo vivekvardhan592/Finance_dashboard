@@ -46,7 +46,7 @@ const RetentionCard = () => {
 
           {/* 🔹 Center Text */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">
+            <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">
               {capitalRetentionRate}
             </span>
             <span className="text-[10px] sm:text-xs text-zinc-400 -mt-1">
